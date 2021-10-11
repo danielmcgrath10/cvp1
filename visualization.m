@@ -12,9 +12,11 @@ bl2 = uicontrol('Parent',f,'Style','text','Position',[510,0,30,23],...
 h = 1;          
 b.Callback = @plotImageCallback;
 
-
 function plotImageCallback(src, event)
     td = evalin('base', 'temporal_d');
+    imgs = evalin('base', 'images');
     value = round(src.Value);
-    image(td(:,:,value), 'CDataMapping', 'scaled');
+    subplot(1,2,1), image(imgs(:,:,value), 'CDataMapping', 'scaled');
+%     subplot(1,2,2), image(imgs(:,:,value + 1), 'CDataMapping', 'scaled');
+    subplot(1,2,2), image(td(:,:,value), 'CDataMapping', 'scaled');
 end
