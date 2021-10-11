@@ -17,11 +17,12 @@ figure;
 colormap gray;
 image(file, 'CDataMapping', 'scaled');
 
-temporal_d = zeros(240, 320, 1069);
-simple_filter_masked = simple_filter(images, numFiles, threshold);
+temporal_d = simple_filter(images, numFiles, threshold);
 
 
-function [simple_filter_masked] = simple_filter(images, numFiles, threshold)
+function [temporal_d] = simple_filter(images, numFiles, threshold)
+    temporal_d(:,:,1) = zeros(240, 320);
+    temporal_d(:,:,numFiles) = zeros(240, 320);
     for i = 2:(numFiles - 2)
         img_0 = images(:,:,i-1);
         img_1 = images(:,:,i);
@@ -32,7 +33,7 @@ function [simple_filter_masked] = simple_filter(images, numFiles, threshold)
         maskedDiff = diff; 
         maskedDiff(zeroindices) = 0;
         maskedDiff(oneindices) = 1;
-        simple_filter_masked(:,:,i) = maskedDiff;
+        temporal_d(:,:,i) = maskedDiff;
     end
 end
 
