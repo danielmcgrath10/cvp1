@@ -1,7 +1,9 @@
-directory = uigetdir(pwd, 'Select a Folder');
-filePattern = fullfile(directory, '*.jpg');
+% directory = uigetdir(pwd, 'Select a Folder');
+% filePattern = fullfile(directory, '*.jpg');
+filePattern = '/Users/danielmcgrath/Documents/fifth-year-northeastern/Fall/computer-vision/Project 1/cvp1/Office/*.jpg';
 officeFiles = dir(filePattern);
 numOfficeFiles = length(officeFiles);
+threshold = 3;
 
 images = zeros(240,320,1070);
 for i = 1:numOfficeFiles
@@ -19,7 +21,12 @@ for i = 1:(numOfficeFiles - 1)
     img_0 = images(:,:,i);
     img_1 = images(:,:,i + 1);
     diff = img_1 - img_0;
-    temporal_d(:,:,i) = diff;
+    zeroindices = find(abs(diff) < threshold);
+    oneindices = find(abs(diff) >= threshold);
+    maskedDiff = diff; 
+    maskedDiff(zeroindices) = 0;
+    maskedDiff(oneindices) = 1;
+    temporal_d(:,:,i) = maskedDiff;
 end
 
 
