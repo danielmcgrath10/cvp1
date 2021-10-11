@@ -4,9 +4,8 @@ filePattern = '/Users/danielmcgrath/Documents/fifth-year-northeastern/Fall/compu
 officeFiles = dir(filePattern);
 numOfficeFiles = length(officeFiles);
 
-images = zeros(240,320,3,1070);
+images = [];
 for i = 1:numOfficeFiles
    file = officeFiles(i);
-   images(:,:,:,i) = imread(strcat(file.folder,'/',file.name));
+   images(i) = imread(strcat(file.folder,'/' + file.name));
 end
-
