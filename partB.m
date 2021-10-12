@@ -1,11 +1,9 @@
-clear all;
-
-% directory = uigetdir(pwd, 'Select a Folder');
-% filePattern = fullfile(directory, '*.jpg');
-filePattern = '/Users/danielmcgrath/Documents/fifth-year-northeastern/Fall/computer-vision/Project 1/cvp1/Office/*.jpg';
+directory = uigetdir(pwd, 'Select a Folder');
+filePattern = fullfile(directory, '*.jpg');
+% filePattern = '/Users/danielmcgrath/Documents/fifth-year-northeastern/Fall/computer-vision/Project 1/cvp1/Office/*.jpg';
 files = dir(filePattern);
 numFiles = length(files);
-threshold = 3;
+threshold = 9;
 tsigma = 1;
 ssigma = 1;
 choice = 3;
@@ -30,7 +28,7 @@ function [temporal_d] = simple_filter(images, numFiles, threshold)
         diff = 0.5 * ((img_0 .* -1) + (img_1 .* 0) + (img_2 .* 1));
         zeroindices = find(abs(diff) < threshold);
         oneindices = find(abs(diff) >= threshold);
-        maskedDiff = diff; 
+        maskedDiff = diff;
         maskedDiff(zeroindices) = 0;
         maskedDiff(oneindices) = 1;
         temporal_d(:,:,i) = maskedDiff;
@@ -45,7 +43,7 @@ function [temporal_d] = one_d_gaussian(images, numFiles, threshold, tsigma)
         diff = img_1 - img_0;
         zeroindices = find(abs(diff) < threshold);
         oneindices = find(abs(diff) >= threshold);
-        maskedDiff = diff; 
+        maskedDiff = diff;
         maskedDiff(zeroindices) = 0;
         maskedDiff(oneindices) = 1;
         temporal_d(:,:,i) = maskedDiff;
@@ -60,16 +58,16 @@ function [temporal_d] = spatial_smoothing(images, numFiles, threshold, ssigma, c
             for i = 1:(numFiles-1)
                 image_0 = images(:, :, i);
                 image_1 = images(:, :, i+1);
-                for j = 2:(size(image,1)-1)
-                    for l = 2:(size(image,2)-1)
-                        image_0 = sum(image_0(j-1:j+1,k-1:k+1) .* filter, 'all');
-                        image_1 = sum(image_1(j-1:j+1,k-1:k+1) .* filter, 'all');
+                for j = 2:(size(images,1)-1)
+                    for k = 2:(size(images,2)-1)
+                        image_0(j,k) = sum(image_0(j-1:j+1,k-1:k+1) .* filter, 'all');
+                        image_1(j,k) = sum(image_1(j-1:j+1,k-1:k+1) .* filter, 'all');
                     end
                 end
                 diff = image_1 - image_0;
                 zeroindices = find(abs(diff) < threshold);
                 oneindices = find(abs(diff) >= threshold);
-                maskedDiff = diff; 
+                maskedDiff = diff;
                 maskedDiff(zeroindices) = 0;
                 maskedDiff(oneindices) = 1;
                 temporal_d(:,:,i) = maskedDiff;
@@ -80,16 +78,16 @@ function [temporal_d] = spatial_smoothing(images, numFiles, threshold, ssigma, c
             for i = 1:(numFiles-1)
                 image_0 = images(:, :, i);
                 image_1 = images(:, :, i+1);
-                for j = 3:(size(image,1)-2)
-                    for l = 3:(size(image,2)-2)
-                        image_0 = sum(image_0(j-2:j+2,k-2:k+2) .* filter, 'all');
-                        image_1 = sum(image_1(j-2:j+2,k-2:k+2) .* filter, 'all');
+                for j = 3:(size(images,1)-2)
+                    for k = 3:(size(images,2)-2)
+                        image_0(j,k) = sum(image_0(j-2:j+2,k-2:k+2) .* filter, 'all');
+                        image_1(j,k) = sum(image_1(j-2:j+2,k-2:k+2) .* filter, 'all');
                     end
                 end
                 diff = image_1 - image_0;
                 zeroindices = find(abs(diff) < threshold);
                 oneindices = find(abs(diff) >= threshold);
-                maskedDiff = diff; 
+                maskedDiff = diff;
                 maskedDiff(zeroindices) = 0;
                 maskedDiff(oneindices) = 1;
                 temporal_d(:,:,i) = maskedDiff;
@@ -102,19 +100,12 @@ function [temporal_d] = spatial_smoothing(images, numFiles, threshold, ssigma, c
                 diff = image_1 - image_0;
                 zeroindices = find(abs(diff) < threshold);
                 oneindices = find(abs(diff) >= threshold);
-                maskedDiff = diff; 
+                maskedDiff = diff;
                 maskedDiff(zeroindices) = 0;
                 maskedDiff(oneindices) = 1;
                 temporal_d(:,:,i) = maskedDiff;
             end
         otherwise
-            print("error"); 
+            print("error");
     end
 end
-
-
-
-
-
-
-    
