@@ -1,6 +1,7 @@
 [images, numImages] = import_images(240, 320);
 
-temporal_d = temporal_derivative(images);
+filter = 0.5 * [-1, 1]';
+temporal_d = temporal_derivative(images, filter);
 
 threshold = 11;
 thresholded_d = threshold_images(temporal_d, threshold);

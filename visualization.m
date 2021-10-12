@@ -11,18 +11,20 @@ bl2 = uicontrol('Parent',f,'Style','text','Position',[510,0,30,23],...
 %                 'String','Image Index','BackgroundColor',bgcolor);       
 b.Callback = @plotImageCallback;
 
-t = uicontrol('Parent',f,'Style','slider', 'SliderStep',[1/100, 1/100],...
-    'Position',[600,0,419,23],'value',1, 'min',1, 'max',100);
+% t = uicontrol('Parent',f,'Style','slider', 'SliderStep',[1/100, 1/100],...
+%     'Position',[600,0,419,23],'value',1, 'min',1, 'max',100);
+t = uicontrol('Parent',f,'Style','edit', 'Units', 'pixels',...
+    'Position',[600,0,50,23]);
 bgcolor = f.Color;
-tl1 = uicontrol('Parent',f,'Style','text','Position',[570,0,23,23],...
-                'String','1','BackgroundColor',bgcolor);
-tl2 = uicontrol('Parent',f,'Style','text','Position',[1020,0,30,23],...
-                'String','100','BackgroundColor',bgcolor);
+tl1 = uicontrol('Parent',f,'Style','text','Position',[560,0,53,23],...
+                'String','Threshold','BackgroundColor',bgcolor);
+% tl2 = uicontrol('Parent',f,'Style','text','Position',[670,0,30,23],...
+%                 'String','100','BackgroundColor',bgcolor);
 
 t.Callback = @changeThresholdCallback;            
             
 function plotImageCallback(src, event)
-    thd = evalin('base', 'temporal_d');
+    thd = evalin('base', 'thresholded_d');
     imgs = evalin('base', 'images');
     value = round(src.Value);
     subplot(1,2,1), image(imgs(:,:,value), 'CDataMapping', 'scaled');
@@ -31,6 +33,8 @@ end
 
 function changeThresholdCallback(src, event)
     td = evalin('base', 'temporal_d');
-    thd = threshold_images(td, src.Value);
+    thd = threshold_images(td, str2double(src.String));
     assignin('base', 'thresholded_d', thd);
+    bb = evalin('base', 'b');
+    plotImageCallback(bb, event);
 end
