@@ -3,7 +3,8 @@ s_choice = 3;
 
 threshold = 9;
 ssigma = 1;
-tsigma = 1;
+tsigma = 3;
+tlength = 5;
 
 [images, numImages] = import_images(240, 320);
 
@@ -32,10 +33,11 @@ switch t_choice
     case 1
         filter = 0.5 * [-1, 0, 1]';
         temporal_d = temporal_derivative(masked_images, filter);
+    case 2
+        filter = gauss_tmask(tlength, tsigma);
+        temporal_d = temporal_derivative(masked_images, filter);
     otherwise
         disp("error");
 end
-% filter = 0.5 * [-1, 0, 1]';
-% temporal_d = temporal_derivative(masked_images, filter);
 
 thresholded_d = threshold_images(temporal_d, threshold);
