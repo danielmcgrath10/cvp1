@@ -1,12 +1,17 @@
-t_choice = 1;
-s_choice = 3;
+start_img = 1;
+stop_img = 1070;
+
+t_choice = 2;
+s_choice = 0;
+th_choice = 1;
 
 threshold = 9;
 ssigma = 1;
-tsigma = 3;
+tsigma = 1;
 tlength = 5;
 
-[images, numImages] = import_images(240, 320);
+[images, numImages] = import_images(240, 320, start_img, stop_img);
+images = images(:,:,start_img:stop_img);
 
 masked_images = zeros(size(images));
 switch s_choice
@@ -40,4 +45,16 @@ switch t_choice
         disp("error");
 end
 
-thresholded_d = threshold_images(temporal_d, threshold);
+thresholded_d = zeros(size(temporal_d));
+switch th_choice
+    case 0
+        thresholded_d = temporal_d;
+    case 1
+        thresholded_d = threshold_images(temporal_d, threshold);
+    case 2
+        thresholded_d = threshold_images_dynm(temporal_d, threshold);
+    case 3
+        thresholded_d = threshold_images_auto(temporal_d);
+    otherwise
+        disp("error");
+end

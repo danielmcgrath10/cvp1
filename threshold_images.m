@@ -8,11 +8,9 @@ function [thresholded] = threshold_images(images, threshold)
     thresholded = zeros(x,y,n);
     for i = 1:n
         img = images(:,:,i);
-        % TODO: make this an optional thing?
-%         zeroindices = find(abs(img) < threshold);
-%         oneindices = find(abs(img) >= threshold);
-        zeroindices = find(img < threshold);
-        oneindices = find(img >= threshold);
+        f = abs(img);
+        zeroindices = find(f < threshold);
+        oneindices = find(f >= threshold);
 
         th_img = img;
         th_img(zeroindices) = 0;
