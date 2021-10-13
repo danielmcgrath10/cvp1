@@ -5,7 +5,7 @@ function [thresholded] = threshold_images_auto(images)
     
     % Generate deviation scalars as temporal noise estimates
     pixel_deviations = est_noise(images);
-    threshold = mean(pixel_deviations, 'all') * 3;
+    threshold = mean(pixel_deviations, 'all') * 2;
     thresholded = zeros(x,y,n);
     for i = 1:n
         img = images(:,:,i);

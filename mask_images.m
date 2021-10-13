@@ -3,19 +3,20 @@ function [masked] = mask_images(images, mask)
     border = floor(n/2);
     
     masked = zeros(size(images));
-    for x = 1:size(images, 3)
-        img = images(:,:,x);
-        length = size(img, 1);
+    for k = 1:size(images, 3)
+        img = images(:,:,k);
+        x = size(img, 1);
+        y = size(img, 2);
         
         filt = img(:,:);
-        for i = (border + 1) : (length - border)
-           for j = (border + 1) : (length - border)
+        for i = (border + 1) : (x - border)
+           for j = (border + 1) : (y - border)
               slice = img((i - border):(i + border), (j - border):(j + border));
               filt(i, j) = sum(slice .* mask, 'all');
            end
         end
         
-        masked(:,:,x) = filt;
+        masked(:,:,k) = filt;
     end
 end
 

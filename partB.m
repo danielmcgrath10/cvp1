@@ -2,10 +2,10 @@ start_img = 1;
 stop_img = 1070;
 
 t_choice = 2;
-s_choice = 0;
-th_choice = 1;
+s_choice = 3;
+th_choice = 2;
 
-threshold = 9;
+threshold = 6;
 ssigma = 1;
 tsigma = 1;
 tlength = 5;
